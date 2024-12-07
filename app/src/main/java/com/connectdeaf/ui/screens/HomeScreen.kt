@@ -32,7 +32,7 @@ import com.connectdeaf.ui.theme.TextColorPrimary
 fun HomeScreen(onSearch: (String) -> Unit) {
     Scaffold(
         topBar = {
-            com.connectdeaf.ui.components.TopAppBar()
+            com.connectdeaf.ui.components.TopAppBar(navController = null, showBackButton = false)
         }
     ) { paddingValues ->
         Column(
@@ -84,7 +84,9 @@ fun HomeScreen(onSearch: (String) -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.home_image),
                 contentDescription = "Ilustração Home",
-                modifier = Modifier.fillMaxWidth().padding(bottom = 40.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 40.dp),
                 contentScale = ContentScale.Crop,
             )
         }
@@ -106,7 +108,11 @@ fun SearchBar(onSearch: (String) -> Unit) {
             unfocusedBorderColor = Color(0xFF999999)
         ),
         leadingIcon = {
-            Icon(imageVector = Icons.Filled.Search, contentDescription = "Search", tint = Color(0xFF999999))
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "Search",
+                tint = Color(0xFF999999)
+            )
         }
     )
 }

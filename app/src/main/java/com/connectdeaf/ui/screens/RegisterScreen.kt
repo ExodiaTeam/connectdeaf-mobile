@@ -54,7 +54,12 @@ fun RegisterScreen(
     var passwordVisible by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { com.connectdeaf.ui.components.TopAppBar() },
+        topBar = {
+            com.connectdeaf.ui.components.TopAppBar(
+                navController = null,
+                showBackButton = true
+            )
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -85,8 +90,8 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = uiState.isInputValid,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (uiState.isInputValid) Color.White else Color(0xFF999999),
-                    contentColor = if (uiState.isInputValid) Color(0xFF478FCC) else Color.White
+                    containerColor = if (uiState.isInputValid) Color(0xFF478FCC) else Color(0xFF999999),
+                    contentColor = if (uiState.isInputValid) Color.White else Color(0xFF478FCC)
                 ),
                 shape = RoundedCornerShape(6.dp)
             ) {
@@ -156,7 +161,7 @@ fun ClientInputFields(
         textStyle = TextStyle(color = Color.Black),
         modifier = Modifier.fillMaxWidth()
     )
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(14.dp))
 
     OutlinedTextField(
         value = uiState.email,
@@ -175,7 +180,6 @@ fun ClientInputFields(
             }
         }
     )
-    Spacer(modifier = Modifier.height(8.dp))
 
     OutlinedTextField(
         value = uiState.phone, // Usando o estado do ViewModel
@@ -190,7 +194,7 @@ fun ClientInputFields(
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = PhoneVisualTransformation()
     )
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(14.dp))
 
     OutlinedTextField(
         value = uiState.password,
