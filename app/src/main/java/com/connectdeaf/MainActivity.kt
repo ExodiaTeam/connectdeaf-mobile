@@ -13,9 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.connectdeaf.navigation.AppNavigation
 import com.connectdeaf.ui.components.MenuDrawerContent
 import com.connectdeaf.ui.components.NotificationDrawerContent
 import com.connectdeaf.ui.components.TopAppBar
@@ -66,13 +65,10 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
                                 ) { innerPadding ->
-                                    NavHost(
+                                    AppNavigation(
                                         navController = navController,
-                                        startDestination = "Register",
                                         modifier = Modifier.padding(innerPadding)
-                                    ) {
-                                        composable("Register") { com.connectdeaf.ui.screens.RegisterScreenPreview() }
-                                    }
+                                    )
                                 }
                             }
                         )
@@ -83,17 +79,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun MainAppNavigation() {
-    val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = "Register" // Tela initial é definite como "Register"
-    ) {
-        composable("Register") {
-        }
-    }
-}
 @Preview
 @Composable
 fun RegisterScreenPreview() {
