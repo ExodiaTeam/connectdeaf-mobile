@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.ui.android)

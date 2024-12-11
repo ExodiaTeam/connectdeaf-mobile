@@ -1,5 +1,6 @@
 package com.connectdeaf.ui.screens
 
+import com.connectdeaf.viewmodel.RegisterViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -29,8 +30,9 @@ import com.connectdeaf.R
 import com.connectdeaf.ui.components.GenericInputField
 import com.connectdeaf.ui.theme.AppStrings
 import com.connectdeaf.utils.PhoneVisualTransformation
-import com.connectdeaf.viewmodel.RegisterUiState
-import com.connectdeaf.viewmodel.RegisterViewModel
+import com.connectdeaf.viewmodel.uistate.RegisterUiState
+
+// Arquivo novo e atualizado
 
 @Composable
 fun RegisterScreen(
