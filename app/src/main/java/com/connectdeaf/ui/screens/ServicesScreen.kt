@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.connectdeaf.ui.components.DropdownMenuField
 import com.connectdeaf.ui.components.SearchBarField
 import com.connectdeaf.ui.components.ServiceCard
+import com.connectdeaf.ui.theme.AppStrings
 import com.connectdeaf.viewmodel.ServicesViewModel
 
 @Composable
@@ -65,12 +67,16 @@ fun ServicesScreen(viewModel: ServicesViewModel = androidx.lifecycle.viewmodel.c
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             DropdownMenuField(
-                label = "Estado",
+                value = viewModel.selectedState.value,
+                label = AppStrings.ESTADO,
+                onValueChange = { selectedState -> viewModel.updateState(selectedState)},
                 options = listOf("São Paulo", "Rio de Janeiro", "Bahia"),
                 modifier = Modifier.weight(1f)
             )
             DropdownMenuField(
-                label = "Cidade",
+                value = viewModel.selectedCity.value,
+                label = AppStrings.CIDADE,
+                onValueChange = { selectedCity -> viewModel.updateCity(selectedCity)},
                 options = listOf("Campinas", "Niterói", "Salvador"),
                 modifier = Modifier.weight(1f)
             )
@@ -122,4 +128,9 @@ fun ServicesScreen(viewModel: ServicesViewModel = androidx.lifecycle.viewmodel.c
             }
         }
     }
+}
+@Preview
+@Composable
+fun ServicesScreenPreview() {
+    ServicesScreen()
 }

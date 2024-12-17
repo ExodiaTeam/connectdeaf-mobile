@@ -1,7 +1,13 @@
 package com.connectdeaf.ui.screens
 
-import com.connectdeaf.viewmodel.RegisterViewModel
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
@@ -26,19 +32,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.connectdeaf.R
+import com.connectdeaf.ui.components.DropdownMenuField
 import com.connectdeaf.ui.components.GenericInputField
-import com.connectdeaf.ui.theme.AppStrings
-import com.connectdeaf.utils.PhoneVisualTransformation
-import com.connectdeaf.viewmodel.uistate.RegisterUiState
 import com.connectdeaf.ui.components.HeaderSectionRegister
 import com.connectdeaf.ui.components.ProfilePictureSection
+import com.connectdeaf.ui.theme.AppStrings
+import com.connectdeaf.utils.PhoneVisualTransformation
+import com.connectdeaf.viewmodel.RegisterProfessionalViewModel
+import com.connectdeaf.viewmodel.uistate.RegisterProfessionalUiState
+import com.connectdeaf.ui.theme.PrimaryColor
 
 @Composable
-fun RegisterScreen(
-    registerViewModel: RegisterViewModel = viewModel(),
+fun RegisterProfessionalScreen(
+    registerProfessionalViewModel: RegisterProfessionalViewModel = viewModel(),
     onClick: () -> Unit
 ) {
-    val uiState by registerViewModel.uiState.collectAsState()
+    val uiState by registerProfessionalViewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -57,32 +66,34 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderSectionRegister(isProfessional = false)
+            HeaderSectionRegister(isProfessional = true)
             ProfilePictureSection(
                 onClick = onClick,
                 imageResourceId = R.drawable.ic_launcher_background
             )
-
             Spacer(modifier = Modifier.height(8.dp))
 
-            ClientInputFields(
+            ProfessionalInputFields(
                 uiState = uiState,
-                onNameChange = registerViewModel::onNameChange,
-                onEmailChange = registerViewModel::onEmailChange,
-                onPhoneChange = registerViewModel::onPhoneChange,
-                onPasswordChange = registerViewModel::onPasswordChange,
+                onNameChange = registerProfessionalViewModel::onNameChange,
+                onEmailChange = registerProfessionalViewModel::onEmailChange,
+                onPhoneChange = registerProfessionalViewModel::onPhoneChange,
+                onPasswordChange = registerProfessionalViewModel::onPasswordChange,
+                onAreaDeAtuacaoChange = registerProfessionalViewModel::onAreaDeAtuacaoChange,
                 passwordVisible = passwordVisible,
-                onPasswordVisibilityChange = { passwordVisible = it }
+                onPasswordVisibilityChange = { passwordVisible = it },
+                onQualificationChange = registerProfessionalViewModel::onQualificationChange
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedButton(
                 onClick = onClick,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.isFormValid,  // Usando isFormValid para habilitar/desabilitar o botão
+                enabled = uiState.isFormValid,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (uiState.isFormValid) Color(0xFF478FCC) else Color(0xFF999999),
-                    contentColor = if (uiState.isFormValid) Color.White else Color(0xFF478FCC)
+                    containerColor = if (uiState.isFormValid) PrimaryColor else Color(0xFF999999),
+                    contentColor = if (uiState.isFormValid) Color.White else PrimaryColor
                 ),
                 shape = RoundedCornerShape(6.dp)
             ) {
@@ -113,16 +124,19 @@ fun RegisterScreen(
                 )
             }
         }
+
     }
 }
 
 @Composable
-fun ClientInputFields(
-    uiState: RegisterUiState,
+fun ProfessionalInputFields(
+    uiState: RegisterProfessionalUiState,
     onNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onAreaDeAtuacaoChange: (String) -> Unit,
+    onQualificationChange: (String) -> Unit,
     passwordVisible: Boolean,
     onPasswordVisibilityChange: (Boolean) -> Unit
 ) {
@@ -157,10 +171,25 @@ fun ClientInputFields(
         passwordVisible = passwordVisible,
         onPasswordVisibilityChange = onPasswordVisibilityChange
     )
+
+    GenericInputField(
+        value = uiState.areaDeAtuacao,
+        onValueChange = onAreaDeAtuacaoChange,
+        label = AppStrings.AREA_ATUACAO,
+        keyboardType = KeyboardType.Text
+    )
+
+    DropdownMenuField(
+        value = uiState.selectedQualifications,
+        label = AppStrings.QUALIFICATION,
+        onValueChange = onQualificationChange,
+        options = uiState.qualifications,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Preview
 @Composable
-fun RegisterScreenPreview() {
-    RegisterScreen(onClick = {})
+fun RegisterProfessionalScreenPreview() {
+    RegisterProfessionalScreen(onClick = {})
 }

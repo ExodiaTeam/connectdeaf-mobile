@@ -19,12 +19,13 @@ import androidx.compose.ui.graphics.Color
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownMenuField(
+    value: String,
     label: String,
     options: List<String>,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(label) }
 
     Box(modifier = modifier) {
         ExposedDropdownMenuBox(
@@ -32,9 +33,9 @@ fun DropdownMenuField(
             onExpandedChange = { expanded = !expanded }
         ) {
             OutlinedTextField(
-                value = selectedOption,
-                onValueChange = {},
+                value = value,
                 label = { Text(label) },
+                onValueChange = onValueChange,
                 readOnly = true,
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
@@ -58,7 +59,7 @@ fun DropdownMenuField(
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
-                            selectedOption = option
+                            onValueChange(option)
                             expanded = false
                         }
                     )
