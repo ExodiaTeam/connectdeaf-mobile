@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.connectdeaf.R
 import com.connectdeaf.ui.components.DrawerMenu
@@ -37,7 +38,7 @@ import com.connectdeaf.ui.theme.PrimaryColor
 import kotlinx.coroutines.launch
 
 @Composable
-fun SuccessRegistrationScreen(onContinueClick: () -> Unit, navController: NavHostController) {
+fun SuccessRegistrationScreen(onContinueClick: () -> Unit, navController: NavController) {
     val drawerStateMenu = rememberDrawerState(DrawerValue.Closed)
     val drawerStateNotifications = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -53,7 +54,8 @@ fun SuccessRegistrationScreen(onContinueClick: () -> Unit, navController: NavHos
                 com.connectdeaf.ui.components.TopAppBar(
                     onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
-                    showBackButton = true
+                    showBackButton = true,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

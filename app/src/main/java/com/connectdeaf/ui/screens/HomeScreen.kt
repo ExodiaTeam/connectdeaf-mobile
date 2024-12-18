@@ -25,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.connectdeaf.R
 import com.connectdeaf.ui.components.ChipComponent
@@ -35,7 +36,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun HomeScreen( navController: NavHostController) {
+fun HomeScreen( navController: NavController) {
 
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -54,7 +55,8 @@ fun HomeScreen( navController: NavHostController) {
                 com.connectdeaf.ui.components.TopAppBar(
                     onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
-                    showBackButton = false
+                    showBackButton = false,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.MessageCard
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun FAQScreen(
     faqViewModel: FAQViewModel? = null,
-    navController: NavHostController
+    navController: NavController
 ) {
     var userMessage by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -53,6 +54,7 @@ fun FAQScreen(
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
                     showBackButton = true,
                     isBot = true,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

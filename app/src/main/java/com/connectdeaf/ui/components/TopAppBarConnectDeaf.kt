@@ -1,5 +1,6 @@
 package com.connectdeaf.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -24,7 +25,7 @@ import com.connectdeaf.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
-    navController: NavController? = null,
+    navController: NavController,
     onOpenDrawerNotifications: () -> Unit,
     onOpenDrawerMenu: () -> Unit,
     showBackButton: Boolean = false,
@@ -45,7 +46,7 @@ fun TopAppBar(
         },
         navigationIcon = {
             if (showBackButton) {
-                IconButton(onClick = { navController?.popBackStack() }) {
+                IconButton(onClick = { navController.popBackStack()  }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Voltar",
@@ -54,9 +55,7 @@ fun TopAppBar(
                 }
             } else {
                 IconButton(onClick = {
-                    navController?.navigate("Notifications") {
-                        launchSingleTop = true
-                    }
+                    onOpenDrawerNotifications()
                 }) {
                     Icon(
                         imageVector = Icons.Default.Notifications,

@@ -27,12 +27,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun MenuDrawerContent(navController: NavHostController, drawerState: DrawerState, scope: CoroutineScope) {
+fun MenuDrawerContent(
+    navController: NavController,
+    drawerState: DrawerState,
+    scope: CoroutineScope
+) {
     Surface(
         modifier = Modifier
             .fillMaxHeight()
@@ -61,7 +65,9 @@ fun MenuDrawerContent(navController: NavHostController, drawerState: DrawerState
                     .fillMaxWidth()
                     .clickable {
                         scope.launch {
-                            navController.navigate("home")
+                            navController.navigate("home") {
+                                launchSingleTop = true
+                            }
                             drawerState.close()
                         }
                     }
@@ -109,7 +115,9 @@ fun MenuDrawerContent(navController: NavHostController, drawerState: DrawerState
                     .fillMaxWidth()
                     .clickable {
                         scope.launch {
-                            navController.navigate("services")
+                            navController.navigate("services") {
+                                launchSingleTop = true
+                            }
                             drawerState.close()
                         }
                     }
@@ -133,7 +141,9 @@ fun MenuDrawerContent(navController: NavHostController, drawerState: DrawerState
                     .fillMaxWidth()
                     .clickable {
                         scope.launch {
-                            navController.navigate("profile")
+                            navController.navigate("profile") {
+                                launchSingleTop = true
+                            }
                             drawerState.close()
                         }
                     }
@@ -156,7 +166,9 @@ fun MenuDrawerContent(navController: NavHostController, drawerState: DrawerState
                     .fillMaxWidth()
                     .clickable {
                         scope.launch {
-                            navController.navigate("faq")
+                            navController.navigate("faq") {
+                                launchSingleTop = true
+                            }
                             drawerState.close()
                         }
                     }

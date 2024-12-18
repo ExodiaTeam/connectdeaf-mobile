@@ -13,11 +13,10 @@ import com.connectdeaf.ui.screens.ServicesScreen
 
 
 @Composable
-fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
+fun AppNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "home",
-        modifier = modifier
+        startDestination = "home"
     ) {
         composable("home") { HomeScreen(navController = navController) }
         composable("profile") { ProfileScreen(navController = navController) }

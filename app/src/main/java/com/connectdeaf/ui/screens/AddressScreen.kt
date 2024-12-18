@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.theme.GreyLighter
@@ -44,7 +45,7 @@ import kotlinx.coroutines.launch
 fun AddressScreen(
     addressViewModel: AddressViewModel = viewModel(),
     onContinueClick: () -> Unit,
-    navController: NavHostController
+    navController: NavController
 ) {
     val uiState by addressViewModel.uiState.collectAsState()
 
@@ -63,7 +64,8 @@ fun AddressScreen(
                 com.connectdeaf.ui.components.TopAppBar(
                     onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
-                    showBackButton = true
+                    showBackButton = true,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

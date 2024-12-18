@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.DropdownMenuField
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ServicesScreen(
     viewModel: ServicesViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navController: NavHostController
+    navController: NavController
 ) {
     val serviceList = viewModel.getPaginatedList()
     val currentPage = viewModel.currentPage.value
@@ -46,7 +47,8 @@ fun ServicesScreen(
                 com.connectdeaf.ui.components.TopAppBar(
                     onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
-                    showBackButton = false
+                    showBackButton = false,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

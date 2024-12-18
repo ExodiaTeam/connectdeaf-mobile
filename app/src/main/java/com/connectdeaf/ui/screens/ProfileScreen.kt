@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.connectdeaf.R
@@ -40,7 +41,7 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(
     profile: Profile? = fakeProfile,
     viewModel: ProfileViewModel = viewModel(),
-    navController: NavHostController
+    navController: NavController
 ) {
 
 
@@ -64,7 +65,8 @@ fun ProfileScreen(
                 com.connectdeaf.ui.components.TopAppBar(
                     onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
-                    showBackButton = true
+                    showBackButton = true,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

@@ -1,6 +1,5 @@
 package com.connectdeaf.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,13 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.connectdeaf.data.model.notifications
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun NotificationDrawerContent(
-    navController: NavHostController,
+    navController: NavController,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
@@ -44,21 +43,18 @@ fun NotificationDrawerContent(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Display the list of notifications using NotificationCard
             Text(
                 text = "Notificações",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
 
-            // Show notifications
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(notifications) { notification ->
                     NotificationCard(
                         notification = notification,
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            // Handle the notification click event (e.g., navigate to a screen)
                             println("Notification clicked: ${notification.title}")
                         }
                     )
