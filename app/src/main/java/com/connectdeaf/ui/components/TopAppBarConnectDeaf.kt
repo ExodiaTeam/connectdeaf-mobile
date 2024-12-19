@@ -29,6 +29,7 @@ fun TopAppBar(
     onOpenDrawerMenu: () -> Unit,
     showBackButton: Boolean = false,
     isBot: Boolean = false,
+    isRegistration: Boolean = false,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -52,7 +53,7 @@ fun TopAppBar(
                         tint = Color.White
                     )
                 }
-            } else {
+            } else if (!isRegistration) {
                 IconButton(onClick = {
                     navController?.navigate("Notifications") {
                         launchSingleTop = true
@@ -67,7 +68,7 @@ fun TopAppBar(
             }
         },
         actions = {
-            if (!showBackButton) {
+            if (!showBackButton && !isRegistration) {
                 IconButton(
                     onClick =
                     onOpenDrawerMenu
