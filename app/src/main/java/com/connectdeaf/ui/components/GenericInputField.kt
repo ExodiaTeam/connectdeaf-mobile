@@ -30,7 +30,7 @@ fun GenericInputField(
     errorMessage: String = "",
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onPasswordVisibilityChange: ((Boolean) -> Unit)? = null,
-    passwordVisible: Boolean = false
+    passwordVisible: Boolean = false,
 ) {
     val visualTransform = if (isPassword && !passwordVisible) {
         PasswordVisualTransformation()
@@ -42,16 +42,17 @@ fun GenericInputField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        shape = RoundedCornerShape(15.dp),
         textStyle = TextStyle(color = Color.Black),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = Modifier.fillMaxWidth(),
         isError = isError,
         visualTransformation = visualTransform,
+
         trailingIcon = if (isPassword) {
             {
                 IconButton(onClick = { onPasswordVisibilityChange?.invoke(!passwordVisible) }) {
-                    val icon = if (passwordVisible) R.drawable.baseline_visibility_24 else R.drawable.baseline_visibility_off_24
+                    val icon =
+                        if (passwordVisible) R.drawable.baseline_visibility_24 else R.drawable.baseline_visibility_off_24
                     val description = if (passwordVisible) "Ocultar senha" else "Mostrar senha"
                     Icon(
                         painter = painterResource(id = icon),
@@ -69,4 +70,6 @@ fun GenericInputField(
         }
     )
 }
+
+
 
