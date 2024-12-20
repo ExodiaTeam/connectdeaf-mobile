@@ -32,6 +32,7 @@ import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.ServiceCard
 import com.connectdeaf.ui.theme.ConnectDeafTheme
 import com.connectdeaf.viewmodel.Assessment
+import com.connectdeaf.viewmodel.DrawerViewModel
 import com.connectdeaf.viewmodel.Profile
 import com.connectdeaf.viewmodel.ProfileViewModel
 import com.connectdeaf.viewmodel.Service
@@ -41,7 +42,8 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(
     profile: Profile? = fakeProfile,
     viewModel: ProfileViewModel = viewModel(),
-    navController: NavController
+    navController: NavController,
+    drawerViewModel: DrawerViewModel = viewModel()
 ) {
 
 
@@ -50,21 +52,18 @@ fun ProfileScreen(
         return
     }
 
-    val drawerStateMenu = rememberDrawerState(DrawerValue.Closed)
-    val drawerStateNotifications = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     DrawerMenu(
         navController = navController,
         scope = scope,
-        drawerStateMenu = drawerStateMenu,
-        drawerStateNotifications = drawerStateNotifications
+        drawerViewModel = drawerViewModel,
     ) {
         Scaffold(
             topBar = {
                 com.connectdeaf.ui.components.TopAppBar(
-                    onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
-                    onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
+                    onOpenDrawerMenu = { scope.launch { drawerViewModel.openMenuDrawer() } },
+                    onOpenDrawerNotifications = { scope.launch { drawerViewModel.openNotificationsDrawer() } },
                     showBackButton = true,
                     navController = navController
                 )

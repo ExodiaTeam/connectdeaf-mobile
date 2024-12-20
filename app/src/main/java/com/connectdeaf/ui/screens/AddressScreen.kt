@@ -39,31 +39,31 @@ import com.connectdeaf.ui.theme.GreyLighter
 import com.connectdeaf.ui.theme.PrimaryColor
 import com.connectdeaf.viewmodel.AddressUiState
 import com.connectdeaf.viewmodel.AddressViewModel
+import com.connectdeaf.viewmodel.DrawerViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun AddressScreen(
     addressViewModel: AddressViewModel = viewModel(),
     onContinueClick: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    drawerViewModel: DrawerViewModel = viewModel()
 ) {
     val uiState by addressViewModel.uiState.collectAsState()
 
-    val drawerStateMenu = rememberDrawerState(DrawerValue.Closed)
-    val drawerStateNotifications = rememberDrawerState(DrawerValue.Closed)
+
     val scope = rememberCoroutineScope()
 
     DrawerMenu(
         navController = navController,
         scope = scope,
-        drawerStateMenu = drawerStateMenu,
-        drawerStateNotifications = drawerStateNotifications
+        drawerViewModel = drawerViewModel,
     ) {
         Scaffold(
             topBar = {
                 com.connectdeaf.ui.components.TopAppBar(
-                    onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
-                    onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
+                    onOpenDrawerMenu = { scope.launch { drawerViewModel.openMenuDrawer() } },
+                    onOpenDrawerNotifications = { scope.launch { drawerViewModel.openNotificationsDrawer() } },
                     showBackButton = true,
                     navController = navController
                 )

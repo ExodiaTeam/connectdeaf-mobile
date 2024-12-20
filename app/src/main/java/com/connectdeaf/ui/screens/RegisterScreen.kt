@@ -30,13 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.connectdeaf.R
 import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.GenericInputField
 import com.connectdeaf.ui.theme.AppStrings
 import com.connectdeaf.utils.PhoneVisualTransformation
+import com.connectdeaf.viewmodel.DrawerViewModel
 import com.connectdeaf.viewmodel.uistate.RegisterUiState
 import kotlinx.coroutines.launch
 
@@ -46,26 +46,25 @@ import kotlinx.coroutines.launch
 fun RegisterScreen(
     registerViewModel: RegisterViewModel = viewModel(),
     onClick: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    drawerViewModel: DrawerViewModel = viewModel()
 ) {
     val uiState by registerViewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
 
-    val drawerStateMenu = rememberDrawerState(DrawerValue.Closed)
-    val drawerStateNotifications = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     DrawerMenu(
         navController = navController,
         scope = scope,
-        drawerStateMenu = drawerStateMenu,
-        drawerStateNotifications = drawerStateNotifications
+        drawerViewModel = drawerViewModel,
+        gesturesEnabled = false
     ) {
         Scaffold(
             topBar = {
                 com.connectdeaf.ui.components.TopAppBar(
-                    onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
-                    onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
+                    onOpenDrawerMenu = { scope.launch { drawerViewModel.openMenuDrawer() } },
+                    onOpenDrawerNotifications = { scope.launch { drawerViewModel.openNotificationsDrawer() } },
                     showBackButton = true,
                     navController = navController
                 )

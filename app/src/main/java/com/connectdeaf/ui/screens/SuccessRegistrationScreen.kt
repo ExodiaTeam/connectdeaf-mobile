@@ -29,31 +29,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.connectdeaf.R
 import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.theme.GreyLighter
 import com.connectdeaf.ui.theme.PrimaryColor
+import com.connectdeaf.viewmodel.DrawerViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun SuccessRegistrationScreen(onContinueClick: () -> Unit, navController: NavController) {
-    val drawerStateMenu = rememberDrawerState(DrawerValue.Closed)
-    val drawerStateNotifications = rememberDrawerState(DrawerValue.Closed)
+fun SuccessRegistrationScreen(
+    onContinueClick: () -> Unit,
+    navController: NavController,
+    drawerViewModel: DrawerViewModel = viewModel()
+) {
+
     val scope = rememberCoroutineScope()
 
     DrawerMenu(
         navController = navController,
         scope = scope,
-        drawerStateMenu = drawerStateMenu,
-        drawerStateNotifications = drawerStateNotifications
+        drawerViewModel = drawerViewModel,
     ) {
         Scaffold(
             topBar = {
                 com.connectdeaf.ui.components.TopAppBar(
-                    onOpenDrawerMenu = { scope.launch { drawerStateMenu.open() } },
-                    onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
+                    onOpenDrawerMenu = { scope.launch { drawerViewModel.openMenuDrawer() } },
+                    onOpenDrawerNotifications = { scope.launch { drawerViewModel.openNotificationsDrawer() } },
                     showBackButton = true,
                     navController = navController
                 )
