@@ -28,16 +28,18 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.connectdeaf.R
 import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.OptionCardButton
 import com.connectdeaf.ui.components.TopAppBar
+import com.connectdeaf.viewmodel.DrawerViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun RegisterInitialScreen(navController: NavHostController) {
+fun RegisterInitialScreen(navController: NavController, drawerViewModel: DrawerViewModel = DrawerViewModel()) {
     val drawerStateMenu = rememberDrawerState(DrawerValue.Closed)
     val drawerStateNotifications = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -46,8 +48,7 @@ fun RegisterInitialScreen(navController: NavHostController) {
     DrawerMenu(
         navController = navController,
         scope = scope,
-        drawerStateMenu = drawerStateMenu,
-        drawerStateNotifications = drawerStateNotifications,
+        drawerViewModel = drawerViewModel
     ) {
         Scaffold(
             topBar = {
@@ -56,7 +57,8 @@ fun RegisterInitialScreen(navController: NavHostController) {
                     onOpenDrawerNotifications = { scope.launch { drawerStateNotifications.open() } },
                     showBackButton = true,
                     isBot = false,
-                    isRegistration = true
+                    isRegistration = true,
+                    navController = navController
                 )
             }
         ) { paddingValues ->

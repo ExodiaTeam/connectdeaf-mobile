@@ -47,13 +47,15 @@ import com.connectdeaf.utils.PhoneVisualTransformation
 import com.connectdeaf.viewmodel.RegisterProfessionalViewModel
 import com.connectdeaf.viewmodel.uistate.RegisterProfessionalUiState
 import com.connectdeaf.ui.theme.PrimaryColor
+import com.connectdeaf.viewmodel.DrawerViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterProfessionalScreen(
     registerProfessionalViewModel: RegisterProfessionalViewModel = viewModel(),
     navController: NavController,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    drawerViewModel: DrawerViewModel = DrawerViewModel()
 ) {
     val uiState by registerProfessionalViewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
@@ -65,8 +67,7 @@ fun RegisterProfessionalScreen(
     DrawerMenu(
         navController = navController,
         scope = scope,
-        drawerStateMenu = drawerStateMenu,
-        drawerStateNotifications = drawerStateNotifications
+        drawerViewModel = drawerViewModel
     ) {
         Scaffold(
             topBar = {
