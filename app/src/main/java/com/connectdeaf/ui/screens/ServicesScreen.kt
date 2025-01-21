@@ -9,8 +9,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.connectdeaf.ui.components.DrawerMenu
@@ -119,7 +121,8 @@ fun ServicesScreen(
                             description = service.description,
                             image = service.imageUrl,
                             value = service.value,
-                            onClick = { id -> println("Clicked on service with id: $id") }
+                            onClick = { id -> println("Clicked on service with id: $id") },
+                            isProfessional = false
                         )
                     }
                 }
@@ -161,4 +164,10 @@ fun ServicesScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun ServicesScreenPreview() {
+    ServicesScreen(navController = NavController(LocalContext.current))
 }
