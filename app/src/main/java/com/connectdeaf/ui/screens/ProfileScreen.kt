@@ -48,12 +48,14 @@ fun ProfileScreen(
     val profileState = viewModel.profile.collectAsState()
     val scope = rememberCoroutineScope()
 
-    val authRepository = AuthRepository(LocalContext.current)
+    val context = LocalContext.current
+
+    val authRepository = AuthRepository(context)
     val professionalId = authRepository.getProfessionalId()
 
     LaunchedEffect (key1 = professionalId) {
         if (professionalId != null) {
-            viewModel.fetchProfile(professionalId, authRepository)
+            viewModel.fetchProfile(professionalId, context)
         }
     }
 

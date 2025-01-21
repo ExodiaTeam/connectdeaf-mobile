@@ -3,9 +3,9 @@ package com.connectdeaf.data.repository
 import android.content.Context
 import android.util.Log
 import com.auth0.android.jwt.JWT
-import com.connectdeaf.network.LoginRequest
-import com.connectdeaf.network.LoginResponse
-import com.connectdeaf.network.RetrofitInstance
+import com.connectdeaf.network.dtos.LoginRequest
+import com.connectdeaf.network.dtos.LoginResponse
+import com.connectdeaf.network.retrofit.ApiServiceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -13,9 +13,10 @@ class AuthRepository(private val context: Context) {
 
     private val sharedPreferences = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
 
-    suspend fun login(email: String, password: String): Result<LoginResponse> {
+    suspend fun login(email: String, password: String, context: Context): Result<LoginResponse> {
         return try {
-            val api = RetrofitInstance.api { null }
+            val apiServiceFactory = ApiServiceFactory(context)
+            val api = apiServiceFactory.apiService
 
             val response = withContext(Dispatchers.IO) {
                 api.login(LoginRequest(email, password))

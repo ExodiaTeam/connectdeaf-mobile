@@ -1,4 +1,4 @@
-package com.connectdeaf.network
+package com.connectdeaf.network.services
 
 import com.connectdeaf.domain.model.FaqRequest
 import com.connectdeaf.domain.model.FaqResponse

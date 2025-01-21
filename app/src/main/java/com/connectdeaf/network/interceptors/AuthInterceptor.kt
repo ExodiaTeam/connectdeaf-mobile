@@ -1,4 +1,4 @@
-package com.connectdeaf.network
+package com.connectdeaf.network.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response

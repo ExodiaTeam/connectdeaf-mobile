@@ -1,6 +1,7 @@
 package com.connectdeaf.viewmodel
 
 import RegisterUiState
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -82,7 +83,7 @@ class RegisterViewModel(
     }
 
     // Registra o usuário, incluindo o endereço
-    fun registerUser() {
+    fun registerUser(context: Context) {
         val state = _uiState.value
 
         // Validar todos os campos
@@ -125,16 +126,16 @@ class RegisterViewModel(
         Log.d("RegisterViewModel", "Dados do UserRequest: $userRequest")
 
         // Enviar para a API
-        sendUserRequest(userRequest)
+        sendUserRequest(userRequest, context)
     }
 
     // Método para enviar os dados para a API
-    private fun sendUserRequest(userRequest: UserRequest) {
+    private fun sendUserRequest(userRequest: UserRequest, context: Context) {
         viewModelScope.launch {
             try {
 
                 // Chama o repositório para criar o usuário
-                val result = userRepository.createUser(userRequest)
+                val result = userRepository.createUser(userRequest, context)
 
                 // Verifica o resultado da criação
                 result.onSuccess { createdUser ->

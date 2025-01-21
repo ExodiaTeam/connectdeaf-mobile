@@ -1,10 +1,10 @@
 package com.connectdeaf.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.connectdeaf.data.repository.AuthRepository
-import com.connectdeaf.network.RetrofitInstance
+import com.connectdeaf.network.retrofit.ApiServiceFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,20 +45,20 @@ class ProfileViewModel : ViewModel() {
     private val _profile = MutableStateFlow<Profile?>(null)
     val profile: StateFlow<Profile?> = _profile
 
-    fun fetchProfile(professionalId: String, authRepository: AuthRepository) {
+    fun fetchProfile(professionalId: String, context: Context) {
         viewModelScope.launch {
             try {
-                val token = authRepository.getAuthToken()
+                val apiServiceFactory = ApiServiceFactory(context)
 
-                val api = RetrofitInstance.api { token }
+                val professionalService = apiServiceFactory.professionalService
+                val serviceService = apiServiceFactory.serviceService
 
-                Log.d("ProfileViewModel", "Fetching profile for professionalId: $professionalId with token: $token")
+                val professional = professionalService.getProfessional(professionalId)
 
-
-                val professional = api.getProfessional(professionalId)
+                val services = serviceService.getServices(professionalId)
 
                 _profile.value = professional.copy(
-                    services = null,
+                    services = services,
                     assessments = null
                 )
             } catch (e: Exception) {

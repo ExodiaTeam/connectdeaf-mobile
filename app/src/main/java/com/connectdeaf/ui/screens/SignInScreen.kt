@@ -73,9 +73,10 @@ fun SignInScreen(
 
             OutlinedButton(
                 onClick = {
-                    viewModel.onSignIn {
-                        navController.navigate("home")
-                    }
+                    viewModel.onSignIn (
+                        { navController.navigate("home") },
+                        context
+                    )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(

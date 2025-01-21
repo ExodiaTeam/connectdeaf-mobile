@@ -1,5 +1,6 @@
 package com.connectdeaf.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,7 +41,7 @@ class SignInViewModel(private val authRepository: AuthRepository) : ViewModel() 
         _uiState.value = _uiState.value.copy(rememberMe = checked)
     }
 
-    fun onSignIn(onSuccess: () -> Unit) {
+    fun onSignIn(onSuccess: () -> Unit, context: Context) {
         val currentState = _uiState.value
         var hasError = false
 
@@ -60,7 +61,8 @@ class SignInViewModel(private val authRepository: AuthRepository) : ViewModel() 
             try {
                 val result = authRepository.login(
                     email = currentState.email,
-                    password = currentState.password
+                    password = currentState.password,
+                    context = context
                 )
                 if (result.isSuccess) {
                     val loginResponse = result.getOrThrow()

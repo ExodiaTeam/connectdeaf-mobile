@@ -53,6 +53,9 @@ fun AddressScreen(
 ) {
     val uiState by registerViewModel.uiState.collectAsState()
 
+    // Para lidar com eventos de navegação
+    val context = LocalContext.current
+
     // Para lidar com escopos de corrotina
     val scope = rememberCoroutineScope()
 
@@ -109,7 +112,7 @@ fun AddressScreen(
                 // Botão de continuar
                 Button(
                     onClick = {
-                        registerViewModel.registerUser()
+                        registerViewModel.registerUser(context)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
