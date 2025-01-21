@@ -220,7 +220,8 @@ fun ProfileScreen(
                                 description = service.description,
                                 image = R.drawable.doutor.toString(),
                                 value = service.value,
-                                onClick = {}
+                                onClick = {},
+                                isProfessional = false
                             )
                         }
                     }
