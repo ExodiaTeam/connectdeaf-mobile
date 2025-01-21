@@ -39,6 +39,7 @@ fun AppNavigation(navController: NavHostController) {
         composable("profile") { ProfileScreen(navController = navController) }
         composable("services") { ServicesScreen(navController = navController) }
         composable("faq") { FAQScreen(navController = navController) }
+        composable("registerServiceScreen") { RegisterScreen(navController = navController, registerViewModel = registerViewModel) }
 
     }
 }
