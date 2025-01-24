@@ -17,29 +17,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.connectdeaf.R
+import com.connectdeaf.data.repository.AuthRepository
+import com.connectdeaf.data.repository.ServicesRepository
 import com.connectdeaf.ui.components.ServiceCard
 import com.connectdeaf.ui.theme.PrimaryColor
 import com.connectdeaf.viewmodel.DrawerViewModel
+import com.connectdeaf.viewmodel.RegisterProfessionalViewModel
+import com.connectdeaf.viewmodel.ServicesProfessionalViewModel
 import kotlinx.coroutines.launch
 
 
-data class Service(
-    val id: String,
-    val description: String,
-    val value: String
-)
-
 @Composable
 fun ServiceProfessionalScreen(
-    services: List<Service>,
+    servicesProfessionalViewModel: ServicesProfessionalViewModel = viewModel(),
     onEditService: (String) -> Unit,
     onDeleteService: (String) -> Unit,
     drawerViewModel: DrawerViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     navController: NavController
 ) {
+    val uiState by servicesProfessionalViewModel.uiState.collectAsState()
     var serviceToDelete by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    var idProfessional = AuthRepository(context).getProfessionalId() ?:""
 
     Scaffold(
         topBar = {
@@ -104,18 +107,17 @@ fun ServiceProfessionalScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(services) { service ->
+                items(uiState.services) { service ->
                     ServiceCard(
-                        id = service.id,
+                        id = service.id.toString(),
                         description = service.description,
-                        value = service.value,
-                        isProfessional = true,
-                        onClick = { /* Ação ao clicar no card */ },
-                        onEdit = onEditService,
-                        onDelete = { serviceToDelete = it }
+                        image = R.drawable.doutor.toString(),
+                        value = service.value.toString(),
+                        isProfessional = false
                     )
                 }
             }
+
         }
 
         serviceToDelete?.let { id ->
@@ -145,19 +147,9 @@ fun ServiceProfessionalScreen(
 @Preview(showBackground = true)
 @Composable
 fun ServiceProfessionalScreenPreview() {
-    val sampleServices = listOf(
-        Service(id = "1", description = "Aulas de Libras", value = "R$ 100"),
-        Service(id = "2", description = "Tradução simultânea", value = "R$ 150"),
-        Service(id = "3", description = "Consultoria em acessibilidade", value = "R$ 200"),
-        Service(id = "4", description = "Acompanhamento especializado", value = "R$ 250"),
-        Service(id = "5", description = "Revisão de textos em Libras", value = "R$ 180"),
-        Service(id = "6", description = "Interpretação remota", value = "R$ 220"),
-        Service(id = "7", description = "Curso de Libras", value = "R$ 300"),
-        Service(id = "8", description = "Mentoria sobre acessibilidade", value = "R$ 180")
-    )
-
+    val serviceRepository = ServicesRepository()
     ServiceProfessionalScreen(
-        services = sampleServices,
+        servicesProfessionalViewModel = ServicesProfessionalViewModel(serviceRepository),
         onEditService = { id -> println("Editar Serviço: $id") },
         onDeleteService = { id -> println("Deletar Serviço: $id") },
         navController = NavController(LocalContext.current)
