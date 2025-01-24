@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.connectdeaf.domain.model.Service
 import kotlinx.coroutines.launch
 
 class ServicesViewModel : ViewModel() {
@@ -28,28 +29,28 @@ class ServicesViewModel : ViewModel() {
     private val _selectedCity = mutableStateOf("")
     val selectedCity: State<String> = _selectedCity
 
-    // Busca e atualização dos serviços (mockado aqui)
-    init {
-        loadServices()
-    }
+//    // Busca e atualização dos serviços (mockado aqui)
+//    init {
+//        loadServices()
+//    }
 
-    private fun loadServices() {
-        viewModelScope.launch {
-            // Simulação de carregamento de dados
-            val mockData = List(25) { index ->
-                Service(
-                    id = "service_$index",
-                    name = "Serviço ${index + 1}",
-                    description = "Descrição do Serviço ${index + 1}",
-                    category = listOf("Categoria A", "Categoria B"),
-                    value = "R$ ${(100 + index * 10)}",
-                    imageUrl = "https://via.placeholder.com/150"
-                )
-            }
-            _serviceList.clear()
-            _serviceList.addAll(mockData)
-        }
-    }
+//    private fun loadServices() {
+//        viewModelScope.launch {
+//            // Simulação de carregamento de dados
+//            val mockData = List(25) { index ->
+//                Service(
+//                    id = "service_$index",
+//                    name = "Serviço ${index + 1}",
+//                    description = "Descrição do Serviço ${index + 1}",
+//                    categories = listOf("Categoria A", "Categoria B"),
+//                    value = "R$ ${(100 + index * 10)}",
+//                    imageUrl = "https://via.placeholder.com/150"
+//                )
+//            }
+//            _serviceList.clear()
+//            _serviceList.addAll(mockData)
+//        }
+//    }
 
     fun onSearchQueryChange(newQuery: String) {
         _searchQuery.value = newQuery
