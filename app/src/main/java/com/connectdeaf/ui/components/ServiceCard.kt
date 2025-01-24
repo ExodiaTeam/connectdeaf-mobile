@@ -31,13 +31,13 @@ fun ServiceCard(
     image: String? = null,
     value: String,
     isProfessional: Boolean, // Define se o usuário é profissional
-    onClick: (id: String) -> Unit,
-    onEdit: (id: String) -> Unit = {},
-    onDelete: (id: String) -> Unit = {}
+//    onClick: (id: String) -> Unit,
+//    onEdit: (id: String) -> Unit = {},
+//    onDelete: (id: String) -> Unit = {}
 ) {
     Card(
         modifier = Modifier
-            .clickable { onClick(id) }
+//            .clickable { onClick(id) }
             .fillMaxWidth()
             .widthIn(max = 180.dp)
             .background(Color.White)
@@ -92,14 +92,14 @@ fun ServiceCard(
                     contentAlignment = Alignment.BottomEnd
                 ) {
                     Row {
-                        IconButton(onClick = { onEdit(id) }) {
+                        IconButton(onClick = { } ) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Editar Serviço",
                                 tint = PrimaryColor
                             )
                         }
-                        IconButton(onClick = { onDelete(id) }) {
+                        IconButton(onClick = {} ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Excluir Serviço",
@@ -124,7 +124,7 @@ private fun ServiceCardPreview() {
             image = null,
             value = "R$ 150,00",
             isProfessional = false,
-            onClick = { id -> println("Clicked on service with id: $id") }
+//            onClick = { id -> println("Clicked on service with id: $id") }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -136,9 +136,9 @@ private fun ServiceCardPreview() {
             image = null,
             value = "R$ 200,00",
             isProfessional = true,
-            onClick = { id -> println("Clicked on service with id: $id") },
-            onEdit = { id -> println("Editing service with id: $id") },
-            onDelete = { id -> println("Deleting service with id: $id") }
+//            onClick = { id -> println("Clicked on service with id: $id") },
+//            onEdit = { id -> println("Editing service with id: $id") },
+//            onDelete = { id -> println("Deleting service with id: $id") }
         )
     }
 }
