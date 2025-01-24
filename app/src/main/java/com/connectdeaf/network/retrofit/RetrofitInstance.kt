@@ -1,4 +1,4 @@
-package com.connectdeaf.network
+package com.connectdeaf.network.retrofit
 
 import com.connectdeaf.network.interceptors.AuthInterceptor
 import okhttp3.OkHttpClient
