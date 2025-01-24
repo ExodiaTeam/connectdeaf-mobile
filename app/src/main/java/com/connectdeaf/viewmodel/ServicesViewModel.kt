@@ -1,5 +1,6 @@
 package com.connectdeaf.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
@@ -8,9 +9,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.connectdeaf.domain.model.Service
+import com.connectdeaf.network.retrofit.ApiServiceFactory
 import kotlinx.coroutines.launch
 
-class ServicesViewModel : ViewModel() {
+class ServicesViewModel(context: Context) : ViewModel() {
 
     private val _serviceList = mutableStateListOf<Service>()
     val serviceList: List<Service> get() = _serviceList
@@ -29,28 +31,26 @@ class ServicesViewModel : ViewModel() {
     private val _selectedCity = mutableStateOf("")
     val selectedCity: State<String> = _selectedCity
 
-//    // Busca e atualização dos serviços (mockado aqui)
-//    init {
-//        loadServices()
-//    }
+    init {
+        loadServices(context)
+    }
 
-//    private fun loadServices() {
-//        viewModelScope.launch {
-//            // Simulação de carregamento de dados
-//            val mockData = List(25) { index ->
-//                Service(
-//                    id = "service_$index",
-//                    name = "Serviço ${index + 1}",
-//                    description = "Descrição do Serviço ${index + 1}",
-//                    categories = listOf("Categoria A", "Categoria B"),
-//                    value = "R$ ${(100 + index * 10)}",
-//                    imageUrl = "https://via.placeholder.com/150"
-//                )
-//            }
-//            _serviceList.clear()
-//            _serviceList.addAll(mockData)
-//        }
-//    }
+    private fun loadServices(context: Context) {
+        viewModelScope.launch {
+            try {
+                val apiServiceFactory = ApiServiceFactory(context)
+                val apiService = apiServiceFactory.serviceService
+
+                val services = apiService.getServices()
+
+                _serviceList.clear()
+                _serviceList.addAll(services)
+            } catch (e: Exception) {
+                Log.e("ServicesViewModel", "Erro ao carregar serviços: ${e.message}", e)
+            }
+        }
+    }
+
 
     fun onSearchQueryChange(newQuery: String) {
         _searchQuery.value = newQuery

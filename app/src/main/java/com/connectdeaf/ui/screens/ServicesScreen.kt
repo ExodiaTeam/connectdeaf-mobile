@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.connectdeaf.ui.components.DrawerMenu
@@ -22,14 +21,20 @@ import com.connectdeaf.ui.components.ServiceCard
 import com.connectdeaf.viewmodel.DrawerViewModel
 import com.connectdeaf.ui.theme.AppStrings
 import com.connectdeaf.viewmodel.ServicesViewModel
+import com.connectdeaf.viewmodel.factory.ServicesViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
 fun ServicesScreen(
-    viewModel: ServicesViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     navController: NavController,
     drawerViewModel: DrawerViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+
+    val context = LocalContext.current
+    val viewModel: ServicesViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = ServicesViewModelFactory(context)
+    )
+
     val serviceList = viewModel.getPaginatedList()
     val currentPage = viewModel.currentPage.value
     val searchQuery = viewModel.searchQuery.value
@@ -117,14 +122,15 @@ fun ServicesScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     items(serviceList) { service ->
-                        ServiceCard(
-                            id = service.id.toString(),
-                            description = service.description,
-                            image = service.imageUrl,
-                            value = service.value.toString(),
-//                            onClick = { id -> println("Clicked on service with id: $id") },
-                            isProfessional = false
-                        )
+                        service.id?.let {
+                            ServiceCard(
+                                id = it,
+                                description = service.description,
+                                image = service.imageUrl,
+                                value = service.value,
+                                onClick = { id -> println("Clicked on service with id: $id") }
+                            )
+                        }
                     }
                 }
 
@@ -165,10 +171,4 @@ fun ServicesScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ServicesScreenPreview() {
-    ServicesScreen(navController = NavController(LocalContext.current))
 }

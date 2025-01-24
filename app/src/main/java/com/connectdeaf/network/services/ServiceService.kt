@@ -7,4 +7,8 @@ import retrofit2.http.Path
 interface ServiceService {
     @GET("api/services/professional/{professional_id}/services")
     suspend fun getServicesByProfessional(@Path("professional_id") id: String): List<Service>
+
+    @GET("api/services")
+    suspend fun getServices(): List<Service>
+
 }

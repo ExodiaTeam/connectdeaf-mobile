@@ -10,14 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-//data class Service(
-//    val id: String,
-//    val name: String,
-//    val description: String,
-//    val category: List<String>,
-//    val value: String,
-//    val imageUrl: String
-//)
 
 data class Assessment(
     val name: String,
