@@ -4,19 +4,20 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.connectdeaf.domain.model.Service
 import com.connectdeaf.network.retrofit.ApiServiceFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-data class Service(
-    val id: String,
-    val name: String,
-    val description: String,
-    val category: List<String>,
-    val value: String,
-    val imageUrl: String
-)
+//data class Service(
+//    val id: String,
+//    val name: String,
+//    val description: String,
+//    val category: List<String>,
+//    val value: String,
+//    val imageUrl: String
+//)
 
 data class Assessment(
     val name: String,
@@ -55,7 +56,7 @@ class ProfileViewModel : ViewModel() {
 
                 val professional = professionalService.getProfessional(professionalId)
 
-                val services = serviceService.getServices(professionalId)
+                val services = serviceService.getServicesByProfessional(professionalId)
 
                 _profile.value = professional.copy(
                     services = services,
