@@ -118,11 +118,11 @@ fun ServicesScreen(
                 ) {
                     items(serviceList) { service ->
                         ServiceCard(
-                            id = service.id,
+                            id = service.id.toString(),
                             description = service.description,
                             image = service.imageUrl,
-                            value = service.value,
-                            onClick = { id -> println("Clicked on service with id: $id") },
+                            value = service.value.toString(),
+//                            onClick = { id -> println("Clicked on service with id: $id") },
                             isProfessional = false
                         )
                     }
