@@ -26,8 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.connectdeaf.data.repository.AuthRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -37,6 +39,8 @@ fun MenuDrawerContent(
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
+    val context = LocalContext.current
+    val idProfessional = AuthRepository(context).getProfessionalId() ?: ""
     Surface(
         modifier = Modifier
             .fillMaxHeight()
@@ -115,10 +119,17 @@ fun MenuDrawerContent(
                     .fillMaxWidth()
                     .clickable {
                         scope.launch {
-                            navController.navigate("services") {
-                                launchSingleTop = true
-                            }
-                            drawerState.close()
+                           if (idProfessional != "") {
+                               navController.navigate("serviceProfessionalScreen") {
+                                   launchSingleTop = true
+                               }
+                               drawerState.close()
+                           } else {
+                               navController.navigate("services") {
+                                   launchSingleTop = true
+                               }
+                               drawerState.close()
+                           }
                         }
                     }
                     .padding(vertical = 16.dp)

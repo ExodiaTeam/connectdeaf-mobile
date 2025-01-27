@@ -12,6 +12,8 @@ import com.connectdeaf.ui.screens.ProfileScreen
 import com.connectdeaf.ui.screens.RegisterInitialScreen
 import com.connectdeaf.ui.screens.RegisterProfessionalScreen
 import com.connectdeaf.ui.screens.RegisterScreen
+import com.connectdeaf.ui.screens.RegisterServiceScreen
+import com.connectdeaf.ui.screens.ServiceProfessionalScreen
 import com.connectdeaf.ui.screens.ServicesScreen
 import com.connectdeaf.ui.screens.SignInScreen
 import com.connectdeaf.ui.screens.SuccessRegistrationScreen
@@ -31,15 +33,43 @@ fun AppNavigation(navController: NavHostController) {
 
         composable("loginScreen") { SignInScreen(navController = navController) }
         composable("registerInitialScreen") { RegisterInitialScreen(navController = navController) }
-        composable("registerProfessionalScreen") { RegisterProfessionalScreen(navController = navController, onClick = {}) }
-        composable("registerScreen") { RegisterScreen(navController = navController, registerViewModel = registerViewModel) }
-        composable("addressScreen") { AddressScreen(navController = navController, registerViewModel = registerViewModel) } // Tela de Endereço
+        composable("registerProfessionalScreen") {
+            RegisterProfessionalScreen(
+                navController = navController,
+                onClick = {})
+        }
+        composable("registerScreen") {
+            RegisterScreen(
+                navController = navController,
+                registerViewModel = registerViewModel
+            )
+        }
+        composable("addressScreen") {
+            AddressScreen(
+                navController = navController,
+                registerViewModel = registerViewModel
+            )
+        } // Tela de Endereço
         composable("successRegistrationScreen") { SuccessRegistrationScreen(navController = navController) }
         composable("home") { HomeScreen(navController = navController) }
         composable("profile") { ProfileScreen(navController = navController) }
         composable("services") { ServicesScreen(navController = navController) }
         composable("faq") { FAQScreen(navController = navController) }
-        composable("registerServiceScreen") { RegisterScreen(navController = navController, registerViewModel = registerViewModel) }
-
+        composable("registerServiceScreen") {
+            RegisterScreen(
+                navController = navController,
+                registerViewModel = registerViewModel
+            )
+        }
+        composable("serviceProfessionalScreen") {
+            ServiceProfessionalScreen(
+                navController = navController
+            )
+        }
+        composable("registerServiceScreen") {
+            RegisterServiceScreen(
+                navController = navController
+            )
+        }
     }
 }
