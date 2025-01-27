@@ -219,11 +219,12 @@ fun ProfileScreen(
                         profileState.value?.services!!.forEach { service ->
                             ServiceCard(
                                 id = service.id.toString(),
+                                name = service.name,
                                 description = service.description,
                                 image = R.drawable.doutor.toString(),
-                                value = service.value.toString(),
-//                                onClick = {},
-                                isProfessional = false
+                                value = service.value,
+                                onClick = {},
+                                isProfessional = true
                             )
                         }
                     }

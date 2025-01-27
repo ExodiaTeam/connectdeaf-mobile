@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,22 +29,29 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.connectdeaf.data.repository.AuthRepository
+import com.connectdeaf.data.repository.ServicesRepository
 import com.connectdeaf.ui.components.GenericInputField
 import com.connectdeaf.ui.components.HeaderSectionRegister
 import com.connectdeaf.ui.components.TopAppBar
 import com.connectdeaf.ui.theme.AppStrings
 import com.connectdeaf.ui.theme.PrimaryColor
-import com.connectdeaf.viewmodel.RegisterServiceViewModel
-import com.connectdeaf.viewmodel.uistate.RegisterServicesUiState
+import com.connectdeaf.viewmodel.ServiceProfessionalViewModel
+import com.connectdeaf.viewmodel.factory.ServicesByProfessionalViewModelFactory
+import com.connectdeaf.viewmodel.uistate.ServicesProfessionalUiState
 
 @Composable
 fun RegisterServiceScreen(
-    registerServiceViewModel: RegisterServiceViewModel = viewModel(),
-    navController: NavController,
-    onClick: () -> Unit
+    navController: NavController
+
 ) {
-    val uiState by registerServiceViewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val servicesRepository = ServicesRepository(context.applicationContext) // Criando o ServicesRepository
+    val servicesProfessionalViewModel: ServiceProfessionalViewModel = viewModel(
+        factory = ServicesByProfessionalViewModelFactory(context = context.applicationContext, servicesRepository = servicesRepository) // Passando o ServicesRepository para a fábrica
+    )
+    val uiState by servicesProfessionalViewModel.uiState.collectAsState()
+    val idProfessional = AuthRepository(context).getProfessionalId() ?: ""
 
     Scaffold(
         topBar = {
@@ -66,21 +75,22 @@ fun RegisterServiceScreen(
 
             RegisterInputFields(
                 uiState = uiState,
-                onNameServiceChange = registerServiceViewModel::onNameServiceChange,
-                onDescriptionChange = registerServiceViewModel::onDescriptionChange,
-                onCategoryChange = registerServiceViewModel::onCategoryChange,
-                onPriceChange = registerServiceViewModel::onPriceChange
+                onNameServiceChange = servicesProfessionalViewModel::onNameServiceChange,
+                onDescriptionChange = servicesProfessionalViewModel::onDescriptionChange,
+                onCategoryChange = servicesProfessionalViewModel::onCategoryChange,
+                onPriceChange = servicesProfessionalViewModel::onPriceChange
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .size(311.dp, 116.dp)
                     .drawDashedBorder(PrimaryColor)
                     .clickable {
                         selectImage(context) { uri ->
-                            registerServiceViewModel.onImageSelected(uri)
+                            servicesProfessionalViewModel.onImageSelected(uri)
                         }
                     },
                 contentAlignment = Alignment.Center
@@ -99,7 +109,22 @@ fun RegisterServiceScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             OutlinedButton(
-                onClick = onClick,
+                onClick = {
+                    if (uiState.isFormValid) {
+                        servicesProfessionalViewModel.createServiceByProfessional(idProfessional, context)
+                        Log.d("RegisterServiceScreen", "Formulário válido")
+                        Log.d("RegisterServiceScreen", "Nome do serviço: ${uiState.nameService}")
+                        Log.d("IDProfessional", idProfessional)
+
+                        Toast.makeText(context, "Serviço criado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                        navController.navigate("serviceProfessionalScreen")
+                    } else {
+                        Log.d("RegisterServiceScreen", "Formulário inválido")
+                        // Exibe a mensagem de erro
+                        Toast.makeText(context, "Formulário inválido. Verifique os campos.", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
@@ -124,7 +149,7 @@ fun RegisterServiceScreen(
 
 @Composable
 fun RegisterInputFields(
-    uiState: RegisterServicesUiState,
+    uiState: ServicesProfessionalUiState,
     onNameServiceChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
@@ -198,5 +223,5 @@ fun selectImage(context: Context, onImageSelected: (Uri) -> Unit) {
 @Preview
 @Composable
 fun RegisterServiceScreenPreview() {
-    RegisterServiceScreen(onClick = {}, navController = NavController(LocalContext.current))
+    RegisterServiceScreen( navController = NavController(LocalContext.current))
 }
