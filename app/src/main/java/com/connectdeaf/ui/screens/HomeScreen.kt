@@ -1,9 +1,18 @@
 package com.connectdeaf.ui.screens
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -11,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,14 +43,12 @@ import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.SearchBarField
 import com.connectdeaf.ui.theme.PrimaryColor
 import com.connectdeaf.viewmodel.DrawerViewModel
+import com.connectdeaf.viewmodel.ServicesViewModel
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun HomeScreen(navController: NavController, drawerViewModel : DrawerViewModel) {
-
-    var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
-
+fun HomeScreen(navController: NavController, drawerViewModel : DrawerViewModel, servicesViewModel: ServicesViewModel) {
     val scope = rememberCoroutineScope()
 
     DrawerMenu(
@@ -96,15 +104,43 @@ fun HomeScreen(navController: NavController, drawerViewModel : DrawerViewModel) 
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                SearchBarField(
-                    onSearchQueryChange = { searchQuery = it },
-                    placeholder = "Pesquisar por serviço...",
-                    searchQuery = searchQuery
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SearchBarField(
+                        searchQuery = servicesViewModel.searchQuery.collectAsState().value,
+                        onSearchQueryChange = { newValue -> servicesViewModel.onSearchQueryChange(newValue) },
+                        placeholder = "Pesquisar por serviço...",
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    IconButton(
+                        onClick = { navController.navigate("services") },
+                        modifier = Modifier.size(56.dp).background(Color(0xFFE2E8F7), shape = RoundedCornerShape(8.dp))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "Pesquisar",
+                            tint = Color.Black,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TagsSection(tags = listOf("Designer", "IA", "Outra", "Tag", "Desenvolvimento"))
+                TagsSection(
+                    tags = listOf("Designer", "IA", "Outra", "Tag", "Desenvolvimento"),
+                    onTagSelected = {
+                        servicesViewModel.onSearchQueryChange(TextFieldValue(it))
+                        navController.navigate("services")
+                    }
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -123,7 +159,7 @@ fun HomeScreen(navController: NavController, drawerViewModel : DrawerViewModel) 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TagsSection(tags: List<String>) {
+fun TagsSection(tags: List<String>, onTagSelected: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -144,7 +180,10 @@ fun TagsSection(tags: List<String>) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             tags.forEach { tag ->
-                ChipComponent(tag)
+                ChipComponent(
+                    text = tag,
+                    onClick = onTagSelected
+                )
             }
         }
     }
@@ -153,5 +192,5 @@ fun TagsSection(tags: List<String>) {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen( navController = NavHostController(LocalContext.current), drawerViewModel = DrawerViewModel())
+    HomeScreen( navController = NavHostController(LocalContext.current), drawerViewModel = DrawerViewModel(), servicesViewModel = ServicesViewModel(LocalContext.current))
 }

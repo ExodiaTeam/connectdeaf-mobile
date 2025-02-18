@@ -27,12 +27,15 @@ import com.connectdeaf.ui.screens.SignInScreen
 import com.connectdeaf.ui.screens.SuccessRegistrationScreen
 import com.connectdeaf.viewmodel.NotificationViewModel
 import com.connectdeaf.viewmodel.RegisterViewModel
+import com.connectdeaf.viewmodel.ServicesViewModel
 import com.connectdeaf.viewmodel.factory.RegisterViewModelFactory
+import com.connectdeaf.viewmodel.factory.ServicesViewModelFactory
 
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
     val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
+    val servicesViewModel: ServicesViewModel = viewModel(factory = ServicesViewModelFactory(navController.context))
     val drawerViewModel = viewModel<com.connectdeaf.viewmodel.DrawerViewModel>()
 
     NavHost(
@@ -59,9 +62,9 @@ fun AppNavigation(navController: NavHostController) {
         composable("registerScreen") { RegisterScreen(navController = navController, registerViewModel = registerViewModel) }
         composable("addressScreen") { AddressScreen(navController = navController, registerViewModel = registerViewModel) } // Tela de Endereço
         composable("successRegistrationScreen") { SuccessRegistrationScreen(navController = navController) }
-        composable("home") { HomeScreen(navController = navController, drawerViewModel = drawerViewModel) }
+        composable("home") { HomeScreen(navController = navController, drawerViewModel = drawerViewModel, servicesViewModel = servicesViewModel) }
         composable("profile") { ProfileScreen(navController = navController) }
-        composable("services") { ServicesScreen(navController = navController) }
+        composable("services") { ServicesScreen(navController = navController, servicesViewModel = servicesViewModel) }
         composable("faq") { FAQScreen(navController = navController) }
         composable(
             route = "service/{serviceId}",

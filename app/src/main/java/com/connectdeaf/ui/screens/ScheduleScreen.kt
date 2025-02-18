@@ -91,7 +91,6 @@ fun ScheduleScreen(
                 com.connectdeaf.ui.components.TopAppBar(
                     onOpenDrawerMenu = { scope.launch { drawerViewModel.openMenuDrawer() } },
                     onOpenDrawerNotifications = { scope.launch { drawerViewModel.openNotificationsDrawer() } },
-                    showBackButton = true,
                     navController = navController
                 )
             }

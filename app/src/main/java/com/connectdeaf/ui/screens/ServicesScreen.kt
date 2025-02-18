@@ -1,19 +1,32 @@
 package com.connectdeaf.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,33 +34,30 @@ import com.connectdeaf.ui.components.DrawerMenu
 import com.connectdeaf.ui.components.DropdownMenuField
 import com.connectdeaf.ui.components.SearchBarField
 import com.connectdeaf.ui.components.ServiceCard
-import com.connectdeaf.viewmodel.DrawerViewModel
 import com.connectdeaf.ui.theme.AppStrings
+import com.connectdeaf.viewmodel.DrawerViewModel
 import com.connectdeaf.viewmodel.ServicesViewModel
-import com.connectdeaf.viewmodel.factory.ServicesViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
 fun ServicesScreen(
     navController: NavController,
-    drawerViewModel: DrawerViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    drawerViewModel: DrawerViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    servicesViewModel: ServicesViewModel
 ) {
     val context = LocalContext.current
-    val viewModel: ServicesViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = ServicesViewModelFactory(context)
-    )
 
-    val isLoading = viewModel.isLoading.value
-    val searchQuery = viewModel.searchQuery.value
-    val serviceList = viewModel.getPaginatedList()
-    val selectedState = viewModel.selectedState.value
-    val selectedCity = viewModel.selectedCity.value
+
+    val isLoading = servicesViewModel.isLoading.value
+    val serviceList = servicesViewModel.getPaginatedList()
+    val selectedState = servicesViewModel.selectedState.value
+    val selectedCity = servicesViewModel.selectedCity.value
 
     val CustomBlue = Color(0xFF3D66CC)
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        viewModel.loadStatesFromIBGE(context = context)
+        servicesViewModel.loadStatesFromIBGE(context = context)
     }
 
     DrawerMenu(
@@ -101,12 +111,12 @@ fun ServicesScreen(
                 } else {
                     // Search Bar
                     SearchBarField(
-                        searchQuery = viewModel.searchQuery.collectAsState().value, // Passa o TextFieldValue completo
+                        searchQuery = servicesViewModel.searchQuery.collectAsState().value, // Passa o TextFieldValue completo
                         onSearchQueryChange = { newValue ->
-                            viewModel.onSearchQueryChange(newValue) // Atualiza o TextFieldValue completo no ViewModel
+                            servicesViewModel.onSearchQueryChange(newValue) // Atualiza o TextFieldValue completo no ViewModel
                         },
                         placeholder = "Pesquisar por serviço...",
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth()
                     )
 
                     // Dropdown Menus
@@ -120,19 +130,19 @@ fun ServicesScreen(
                             value = selectedState,
                             label = AppStrings.ESTADO,
                             onValueChange = { newState ->
-                                viewModel.updateState(newState)
-                                viewModel.updateCity("") // Limpar a cidade ao selecionar um novo estado
-                                viewModel.loadCitiesForStateFromIBGE(newState, context) // Carregar as cidades ao selecionar o estado
+                                servicesViewModel.updateState(newState)
+                                servicesViewModel.updateCity("") // Limpar a cidade ao selecionar um novo estado
+                                servicesViewModel.loadCitiesForStateFromIBGE(newState, context) // Carregar as cidades ao selecionar o estado
                             },
-                            options = viewModel.states,
+                            options = servicesViewModel.states,
                             modifier = Modifier.weight(1f)
                         )
 
                         DropdownMenuField(
                             value = selectedCity,
                             label = AppStrings.CIDADE,
-                            onValueChange = { viewModel.updateCity(it) },
-                            options = viewModel.cities,
+                            onValueChange = { servicesViewModel.updateCity(it) },
+                            options = servicesViewModel.cities,
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -165,8 +175,8 @@ fun ServicesScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(
-                            onClick = { viewModel.previousPage() },
-                            enabled = viewModel.currentPage.value > 0
+                            onClick = { servicesViewModel.previousPage() },
+                            enabled = servicesViewModel.currentPage.value > 0
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
@@ -174,13 +184,13 @@ fun ServicesScreen(
                             )
                         }
                         Text(
-                            text = "Página ${viewModel.currentPage.value + 1}",
+                            text = "Página ${servicesViewModel.currentPage.value + 1}",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
                         IconButton(
-                            onClick = { viewModel.nextPage() },
-                            enabled = (viewModel.currentPage.value + 1) * viewModel.servicesPerPage < viewModel.filteredServiceList.size
+                            onClick = { servicesViewModel.nextPage() },
+                            enabled = (servicesViewModel.currentPage.value + 1) * servicesViewModel.servicesPerPage < servicesViewModel.filteredServiceList.size
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowForward,
