@@ -45,7 +45,6 @@ fun SearchBarField(
             unfocusedIndicatorColor = Color(0xFF999999)
         ),
         modifier = modifier
-            .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .height(56.dp)
     )
