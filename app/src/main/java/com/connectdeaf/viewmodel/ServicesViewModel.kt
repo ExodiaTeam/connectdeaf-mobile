@@ -61,6 +61,7 @@ class ServicesViewModel(context: Context) : ViewModel() {
                 val statesList = ibgeService.getStates() // Chamada Retrofit
                 Log.d("ServicesViewModel", "Estados carregados do IBGE: $statesList")
                 _states.clear()
+                _states.add("")
                 _states.addAll(statesList.map { it.sigla }.sorted()) // Converte para lista de nomes e ordena
                 Log.d("ServicesViewModel", "Estados após ordenação: $_states")
             } catch (e: Exception) {
@@ -78,6 +79,7 @@ class ServicesViewModel(context: Context) : ViewModel() {
                 val citiesList = ibgeService.getCities(stateUF) // Chamada Retrofit
                 Log.d("ServicesViewModel", "Cidades carregadas do IBGE: $citiesList")
                 _cities.clear()
+                _cities.add("")
                 _cities.addAll(citiesList.map { it.nome }.sorted()) // Converte para lista de nomes e ordena
                 Log.d("ServicesViewModel", "Cidades após ordenação: $_cities")
             } catch (e: Exception) {

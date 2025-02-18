@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ChipComponent(
     text: String,
-    onClick: (() -> Unit)? = null,
+    onClick: (String) -> Unit,
     containerColor: Color = Color(0xFFE2E8F7),
     labelColor: Color = Color.Black
 ) {
+
     ElevatedAssistChip(
-        onClick = onClick ?: {},
+        onClick = { onClick(text) },
         shape = RoundedCornerShape(16.dp),
         label = {
             Text(
@@ -30,6 +31,6 @@ fun ChipComponent(
             containerColor = containerColor,
             labelColor = labelColor
         ),
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp) // Ajuste de margem
     )
 }

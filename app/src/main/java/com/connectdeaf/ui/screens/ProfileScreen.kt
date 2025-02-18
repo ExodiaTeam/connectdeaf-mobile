@@ -221,7 +221,7 @@ fun ProfileScreen(
                                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
                                         currentRowItems.forEach { chipSkill ->
-                                            ChipComponent(text = chipSkill)
+                                            ChipComponent(text = chipSkill, onClick = {})
                                         }
                                     }
                                     currentRowItems = mutableListOf()
